@@ -3,11 +3,9 @@ import numpy as np
 from torch.utils.data import Dataset, DataLoader
 
 class Shapes3DDataset(Dataset):
-    def __init__(self, data_path, transform=None):
-        self.data_path = data_path
+    def __init__(self, data, transform=None):
         assert os.path.exists(self.data_path), f"images path {self.data_path} does not exist"
-        self.dataset = h5py.File(self.data_path, 'r')
-        self.images = self.dataset['images']
+        self.images = data['images']
         ## self.labels = self.file['labels']
         self.transform = transform
 
@@ -34,7 +32,19 @@ def custom_collate_fn(batch):
     # labels = torch.stack([item[1] for item in batch])
     return images, None
 
-def load_data(path):
-    dataset = Shapes3DDataset(data_path=path)
+def folding(path, k, num_fold):
+    assert os.path.exists(path), f"images path {path} does not exist"
+    data = h5py.File(path, 'r')
+    fold_size = len(data)//k
+    ind_start = k * fold_size
+    if k==num_fold: ind_end = len(data)
+    else: ind_end = (k+1) * fold_size
+    val_set = data['images'][ind_start:ind_end]
+    train_set = np.concatenate((data['images'][:ind_start], data['images'][ind_end:]), axis=0)
+    return train_set, val_set
+
+
+def load_data(dataset):
+    dataset = Shapes3DDataset(data=dataset)
     dataloader = DataLoader(dataset, batch_size=128, shuffle=True, num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
     return dataloader
