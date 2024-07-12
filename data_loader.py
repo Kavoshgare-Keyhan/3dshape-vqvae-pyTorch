@@ -1,6 +1,6 @@
 import os, h5py, torch
 import numpy as np
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
 
 class Shapes3DDataset(Dataset):
     def __init__(self, data_path, transform=None):
@@ -28,3 +28,13 @@ class Shapes3DDataset(Dataset):
         ## label = torch.tensor(label, dtype=torch.float32)
 
         return image, None
+# Custom collate function to handle batch loading
+def custom_collate_fn(batch):
+    images = torch.stack([item[0] for item in batch])
+    # labels = torch.stack([item[1] for item in batch])
+    return images, None
+
+def load_data(path):
+    dataset = Shapes3DDataset(data_path=path)
+    dataloader = DataLoader(dataset, batch_size=128, shuffle=True, num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
+    return dataloader
