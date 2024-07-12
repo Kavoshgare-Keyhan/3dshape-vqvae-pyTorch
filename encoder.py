@@ -30,14 +30,14 @@ class Encoder(nn.Module):
             for i in range(config['convbn_blocks']-1)
         ])
         
-        enc_last_idx = config['convbn_blocks']
-        self.encoder_layers.append(
-            nn.Sequential(
-                nn.Conv2d(config['convbn_channels'][enc_last_idx - 1], config['convbn_channels'][enc_last_idx],
-                          kernel_size=config['conv_kernel_size'][enc_last_idx-1],
-                          stride=config['conv_kernel_strides'][enc_last_idx-1], padding=1),
-            )
-        )
+        # enc_last_idx = config['convbn_blocks']
+        # self.encoder_layers.append(
+        #     nn.Sequential(
+        #         nn.Conv2d(config['convbn_channels'][enc_last_idx - 1], config['convbn_channels'][enc_last_idx],
+        #                   kernel_size=config['conv_kernel_size'][enc_last_idx-1],
+        #                   stride=config['conv_kernel_strides'][enc_last_idx-1], padding=1),
+        #     )
+        # )
     
     def forward(self, x):
         out = x
