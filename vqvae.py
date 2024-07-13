@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from model.encoder import get_encoder
-from model.decoder import get_decoder
-from model.quantizer import get_quantizer
+from encoder import get_encoder
+from decoder import get_decoder
+from quantizer import get_quantizer
 
 
 class VQVAE(nn.Module):
