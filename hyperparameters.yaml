@@ -26,4 +26,4 @@ train_params:
   seed: 42
   save_training_image: True
   path: '/content/drive/MyDrive/Data/3dshapes.h5'
-  output_train_dir: '/content/drive/MyDrive/INI - Generative Episodic Memory/output'
+  output_train_dir: '/content/drive/My Drive/INI - Generative Episodic Memory/output'
