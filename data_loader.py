@@ -46,5 +46,5 @@ def folding(path, k, num_fold):
 
 def load_data(dataset):
     dataset = Shapes3DDataset(data=dataset)
-    dataloader = DataLoader(dataset, batch_size=128, shuffle=True, num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
+    dataloader = DataLoader(dataset, batch_size=256, shuffle=True, num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
     return dataloader
