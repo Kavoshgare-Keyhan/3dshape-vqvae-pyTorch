@@ -14,7 +14,7 @@ model_params:
   codebook_size : 10 # suggestions: [10,20,30,40,50,60,70,80,90,100]
 
 train_params:
-  task_name: 'vqvae_latent_72_codebook_10'
+  task_name: 'vqvae_latent_72_codebook_10_nnLayers_4'
   batch_size: 72
   epochs: 10
   lr: 0.005
@@ -26,4 +26,4 @@ train_params:
   seed: 42
   save_training_image: True
   path: '/content/drive/MyDrive/Data/3dshapes.h5'
-  output_train_dir: '/content/drive/My Drive/INI - Generative Episodic Memory/output'
+  output_train_dir: 'output'
