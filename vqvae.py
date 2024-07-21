@@ -21,9 +21,9 @@ class VQVAE(nn.Module):
         self.decoder = get_decoder(config)
         
     def forward(self, x):
-        enc = self.encoder(x)
+        enc = self.encoder(x) # Call forward method by automatically passing x to the forward method withing Encoder class and returning its output which is called out and is a sequential of layers
         quant_input = self.pre_quant_conv(enc)
-        quant_output, quant_loss, quant_idxs = self.quantizer(quant_input)
+        quant_output, quant_loss, quant_idxs = self.quantizer(quant_input) # Call forward method and return corresponding outputs where quant_output is z_q
         dec_input = self.post_quant_conv(quant_output)
         out = self.decoder(dec_input)
         return {
@@ -34,7 +34,7 @@ class VQVAE(nn.Module):
         }
     
     def decode_from_codebook_indices(self, indices):
-        quantized_output = self.quantizer.quantize_indices(indices)
+        quantized_output = self.quantizer.quantize_indices(indices) # returns indices corresponds to q(z|x)
         dec_input = self.post_quant_conv(quantized_output)
         return self.decoder(dec_input)
         
