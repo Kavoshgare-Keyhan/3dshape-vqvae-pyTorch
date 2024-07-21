@@ -21,7 +21,7 @@ class Quantizer(nn.Module):
         min_encoding_indices = torch.argmin(dist, dim=-1)
         
         #
-        quant_out = torch.index_select(self.embedding.weight, 0, min_encoding_indices.view(-1))
+        quant_out = torch.index_select(self.embedding.weight, 0, min_encoding_indices.view(-1)) # returns embedding weights tensor in the range of min_encoding_indices along x-axis
         x = x.reshape((-1, x.size(-1)))
         commmitment_loss = torch.mean((quant_out.detach() - x) ** 2)
         codebook_loss = torch.mean((quant_out - x.detach()) ** 2)
@@ -35,9 +35,14 @@ class Quantizer(nn.Module):
         return quant_out, quantize_losses, min_encoding_indices
     
     def quantize_indices(self, indices):
-        return einsum(indices, self.embedding.weight, 'b n h w, n d -> b d h w')
+        return einsum(indices, self.embedding.weight, 'b n h w, n d -> b d h w') 
         # Assuming 'indices' and 'self.embedding.weight' are NumPy arrays
         # result = np.einsum('bnhw,nd->bdhw', indices, self.embedding.weight)
+        '''
+        # indices: A tensor representing indices, likely used to select specific embeddings. Its shape is denoted as (b, n, h, w) - batch, number of indices, height, width.
+        # self.embedding.weight: A tensor containing embedding vectors. Its shape is denoted as (n, d) - number of embeddings, embedding dimension.
+        # 'b n h w, n d -> b d h w': The einsum equation, defining how the tensors are multiplied and summed. It specifies that the indices tensor (b, n, h, w) is multiplied by the embedding tensor (n, d) along the 'n' dimension, resulting in an output tensor of shape (b, d, h, w).
+        '''
 
 
 def get_quantizer(config):
