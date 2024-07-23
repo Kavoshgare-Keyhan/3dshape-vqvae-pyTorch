@@ -28,7 +28,7 @@ class Decoder(nn.Module):
                 nn.ConvTranspose2d(config['transposebn_channels'][i], config['transposebn_channels'][i + 1],
                                    kernel_size=config['transpose_kernel_size'][i],
                                    stride=config['transpose_kernel_strides'][i],
-                                   padding=0),
+                                   padding=1),
                 nn.BatchNorm2d(config['transposebn_channels'][i + 1]),
                 activation_map[config['transpose_activation_fn']]
             )
@@ -41,7 +41,7 @@ class Decoder(nn.Module):
                 nn.ConvTranspose2d(config['transposebn_channels'][dec_last_idx - 1], config['transposebn_channels'][dec_last_idx],
                                 kernel_size=config['transpose_kernel_size'][dec_last_idx - 1],
                                 stride=config['transpose_kernel_strides'][dec_last_idx - 1],
-                                padding=0),
+                                padding=1),
                 nn.Tanh()
             )
         )
