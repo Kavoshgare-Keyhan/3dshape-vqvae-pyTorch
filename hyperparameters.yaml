@@ -4,12 +4,12 @@ model_params:
   conv_kernel_size: [3,3,3,2]
   conv_kernel_strides: [2, 2, 1, 1]
   convbn_channels: [3, 6, 12, 24, 72] 
-  conv_activation_fn: 'leaky'
+  conv_activation_fn: 'relu'
   transpose_bn_blocks: 4
   transposebn_channels: [72, 24, 12, 6, 3]
   transpose_kernel_size: [3,3,3,2]
   transpose_kernel_strides: [2, 2, 1, 1]
-  transpose_activation_fn: 'leaky'
+  transpose_activation_fn: 'relu'
   latent_dim: 72 # suggestions: [12,24,30,36,48,54,60,64,72]
   codebook_size : 10 # suggestions: [10,20,30,40,50,60,70,80,90,100]
 
