@@ -27,7 +27,11 @@ class Shapes3DDataset(Dataset):
         image = torch.tensor(image, dtype=torch.float32)
         ## label = torch.tensor(label, dtype=torch.float32)
 
-        return image, None
+        return image
+
+    def __del__(self):
+        self.data.close()
+ 
 # Custom collate function to handle batch loading
 def custom_collate_fn(batch):
     images = torch.stack([item[0] for item in batch])
