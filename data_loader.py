@@ -5,7 +5,7 @@ from torch.utils.data import Dataset, DataLoader
 class Shapes3DDataset(Dataset):
     def __init__(self, path, transform=None):
         self.path = path
-        assert os.path.exists(self.path), f"images path {self.data_path} does not exist"
+        assert os.path.exists(self.path), f"images path {self.path} does not exist"
         self.data = h5py.File(self.path, 'r')
         self.images = self.data['images']
         ## self.labels = self.file['labels']
@@ -27,7 +27,7 @@ class Shapes3DDataset(Dataset):
         image = torch.tensor(image, dtype=torch.float32)
         ## label = torch.tensor(label, dtype=torch.float32)
 
-        return image
+        return image, None
 
     def __del__(self):
         self.data.close()
