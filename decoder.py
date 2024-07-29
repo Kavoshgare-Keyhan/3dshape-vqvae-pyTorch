@@ -48,7 +48,7 @@ class Decoder(nn.Module):
     
     def forward(self, x):
         out = x
-        for idx, layer in enumerate(self.decoder_layers):
+        for layer in self.decoder_layers:
             out = layer(out)
         return out
     
