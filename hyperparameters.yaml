@@ -14,7 +14,6 @@ model_params:
   codebook_size : 10 # suggestions: [10,20,30,40,50,60,70,80,90,100]
 
 train_params:
-  task_name: 'vqvae_latent_72_codebook_10_nnLayers_4'
   batch_size: 72
   epochs: 10
   lr: 0.005
@@ -22,8 +21,9 @@ train_params:
   reconstruction_loss_weight : 1
   codebook_loss_weight : 1
   commitment_loss_weight : 0.2
-  ckpt_name: 'best_vqvae_latent_72_codebook_10.pth'
+  model_name: 'vqvae_nnL4_cdbk10_ld72.pth'
+  indices_tensor: 'vqvae_nnL4_cdbk10_ld72.pt'
   seed: 42
   save_training_image: True
-  path: '/content/drive/MyDrive/Data/3dshapes.h5'
-  output_train_dir: 'output'
+  path: /home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5  # '/content/drive/MyDrive/Data/3dshapes.h5' 
+  output_dir: 'vqvae_outputs'
