@@ -83,9 +83,9 @@ def custom_collate_fn(batch):
     return images, None
 
 
-def load_data(data_path,sample_data,shuffle_data=True):
+def load_data(data_path,sample_data,shuffle_data=True, batch_size=256):
     dataset = Shapes3DDataset(path=data_path)
-    data_loader = DataLoader(dataset, batch_size=256, shuffle=shuffle_data, sampler=sample_data,num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
+    data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle_data, sampler=sample_data,num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
     return data_loader
 
 def load_test(test_data):
