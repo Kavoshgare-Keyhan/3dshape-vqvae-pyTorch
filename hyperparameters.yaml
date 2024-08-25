@@ -15,7 +15,7 @@ model_params:
 
 train_params:
   batch_size: 72
-  epochs: 10
+  epochs: 5
   lr: 0.005
   crit: 'l2'
   reconstruction_loss_weight : 1
