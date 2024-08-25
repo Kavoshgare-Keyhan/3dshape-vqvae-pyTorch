@@ -2,24 +2,24 @@ import os, h5py, torch
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
 
-class ShuffleData:
-    def __init__(self, data_path):
-        self.path = data_path
-        assert os.path.exists(self.path), f"images path {self.path} does not exist"
-        self.data = h5py.File(self.path, 'r')
-        self.images = np.array(self.data['images'])
-        self.labels = np.array(self.data['labels'])
+# class ShuffleData:
+#     def __init__(self, data_path):
+#         self.path = data_path
+#         assert os.path.exists(self.path), f"images path {self.path} does not exist"
+#         self.data = h5py.File(self.path, 'r')
+#         self.images = np.array(self.data['images'])
+#         self.labels = np.array(self.data['labels'])
 
-    def shuffle(self):
-        assert len(self.images) == len(self.labels)
-        p = np.random.permutation(len(self.images))
-        self.images, self.labels = self.images[p], self.labels[p]
+#     def shuffle(self):
+#         assert len(self.images) == len(self.labels)
+#         p = np.random.permutation(len(self.images))
+#         self.images, self.labels = self.images[p], self.labels[p]
     
-    def save_shuffle(self, path, output_file):
-        assert os.path.exists(path), 'Path %s does not exist' % path
-        with h5py.File(os.path.join(path, output_file), 'w') as f:
-            f.create_dataset('images', data=self.images)
-            f.create_dataset('labels', data=self.labels)
+#     def save_shuffle(self, path, output_file):
+#         assert os.path.exists(path), 'Path %s does not exist' % path
+#         with h5py.File(os.path.join(path, output_file), 'w') as f:
+#             f.create_dataset('images', data=self.images)
+#             f.create_dataset('labels', data=self.labels)
 
 
 class Shapes3DDataset(Dataset):
@@ -83,26 +83,26 @@ def custom_collate_fn(batch):
     return images, None
 
 
-def load_data(data_path,sample_data,shuffle_data=True, batch_size=256):
-    dataset = Shapes3DDataset(path=data_path)
-    data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle_data, sampler=sample_data,num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
-    return data_loader
+# def load_data(data_path,sample_data,shuffle_data=True, batch_size=256):
+#     dataset = Shapes3DDataset(path=data_path)
+#     data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=shuffle_data, sampler=sample_data,num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
+#     return data_loader
 
-def load_test(test_data):
-    dataset = Shapes3DTestDataset(test_data)
-    data_loader = DataLoader(dataset, batch_size=256, shuffle=True, num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
-    return dataset, data_loader
+# def load_test(test_data):
+#     dataset = Shapes3DTestDataset(test_data)
+#     data_loader = DataLoader(dataset, batch_size=256, shuffle=True, num_workers=8, pin_memory=True, collate_fn=custom_collate_fn)
+#     return dataset, data_loader
 
-if __name__ =='main':
-    # Load data
-    ## data_path = '/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5'
-    ## sample_data = torch.utils.data.SubsetRandomSampler(np.arange(1000))  # Use a subset of data for demonstration
+# if __name__ =='main':
+#     # Load data
+#     ## data_path = '/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5'
+#     ## sample_data = torch.utils.data.SubsetRandomSampler(np.arange(1000))  # Use a subset of data for demonstration
 
-    ## data_loader = load_data(data_path, sample_data)
+#     ## data_loader = load_data(data_path, sample_data)
 
-    # Shuffle data
-    shuffle_data = ShuffleData(data_path='/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5')
-    shuffle_data.shuffle()
-    shuffle_data.save_shuffle(path='/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/', output_file='3dshapes_shuffled.h5')
+#     # Shuffle data
+#     shuffle_data = ShuffleData(data_path='/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5')
+#     shuffle_data.shuffle()
+#     shuffle_data.save_shuffle(path='/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/', output_file='3dshapes_shuffled.h5')
 
-    print('Data loading and shuffling completed.')
+#     print('Data loading and shuffling completed.')
