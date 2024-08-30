@@ -25,5 +25,5 @@ train_params:
   indices_tensor: 'vqvae_nnL4_cdbk10_ld72.pt'
   seed: 42
   save_training_image: True
-  path: /home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5  # '/content/drive/MyDrive/Data/3dshapes.h5' 
+  path: /home/abghamtm/work/data/3dshapes.h5  #/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5  # '/content/drive/MyDrive/Data/3dshapes.h5' 
   output_dir: 'vqvae_outputs'
