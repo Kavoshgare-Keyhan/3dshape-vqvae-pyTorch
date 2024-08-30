@@ -12,6 +12,8 @@ from sklearn.model_selection import KFold, train_test_split
 from torch.cuda.amp import GradScaler, autocast  # For mixed precision training
 from optuna.pruners import MedianPruner  # For early stopping and pruning
 
+os.nice(19)
+
 # Setup logging
 logging.basicConfig(filename='training_log.log', level=logging.INFO, 
                     format='%(asctime)s:%(levelname)s:%(message)s')
