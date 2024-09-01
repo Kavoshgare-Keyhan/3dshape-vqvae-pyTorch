@@ -74,7 +74,7 @@ def train_for_one_epoch(epoch_idx, model, data_loader, optimizer, criterion, con
         commitment_losses.append(quantize_losses['commitment_loss'].item())
         losses.append(loss.item())
         # Scales the loss, calls backward(), and then unscales gradients
-        scaler.scale(loss).backward()
+        scaler.scale(loss.item()).backward()
         
         # Unscales gradients and calls the step function
         scaler.step(optimizer)
