@@ -66,13 +66,16 @@ def train_for_one_epoch(epoch_idx, model, data_loader, optimizer, criterion, con
 
         # Mixed precision training
         # with autocast():
+        codebook_loss = quantize_losses['codebook_loss'].mean().item()
+        comitment_loss = quantize_losses['commitment_loss'].mean().item()
+        recon_loss = recon_loss.item()
         loss = (config['train_params']['reconstruction_loss_weight']*recon_loss +
-                    config['train_params']['codebook_loss_weight']*quantize_losses['codebook_loss'] +
-                    config['train_params']['commitment_loss_weight']*quantize_losses['commitment_loss'])
-        recon_losses.append(recon_loss.item())
-        codebook_losses.append(config['train_params']['codebook_loss_weight']*quantize_losses['codebook_loss'].item())
-        commitment_losses.append(quantize_losses['commitment_loss'].item())
-        losses.append(loss.item())
+                    config['train_params']['codebook_loss_weight']*codebook_loss +
+                    config['train_params']['commitment_loss_weight']*commitment_loss)
+        recon_losses.append(recon_loss)
+        codebook_losses.append(config['train_params']['codebook_loss_weight']*codebook_loss)
+        commitment_losses.append(commitment_loss)
+        losses.append(loss)
         # Scales the loss, calls backward(), and then unscales gradients
         loss.backward()
         
@@ -81,7 +84,7 @@ def train_for_one_epoch(epoch_idx, model, data_loader, optimizer, criterion, con
         
         
     avg_loss = np.mean(losses)
-    loggiing.info(f"Epoch {epoch_idx + 1} | Loss: {avg_loss:.4f} | Recon Loss : {np.mean(recon_losses):.4f} | Codebook Loss : {p.mean(codebook_losses):.4f} | Commitment Loss : {np.mean(commitment_losses):.4f}")
+    logging.info(f"Epoch {epoch_idx + 1} | Loss: {avg_loss:.4f} | Recon Loss : {np.mean(recon_losses):.4f} | Codebook Loss : {p.mean(codebook_losses):.4f} | Commitment Loss : {np.mean(commitment_losses):.4f}")
     return avg_loss
 
 def cross_validate(config, model, dataset, criterion, batch_size):
@@ -161,12 +164,12 @@ with open(config_path, 'r') as file:
 
 def objective(trial):
     # Define hyperparameters to tune
-    learning_rate = trial.suggest_loguniform('learning_rate', 1e-5, 1e-3)
+    learning_rate = trial.suggest_float('learning_rate', 1e-5, 1e-3,log=True)
     config['train_params']['lr'] = learning_rate
     batch_size = 256 #trial.suggest_categorical('batch_size', [64, 128, 256, 512])
     codebook_size = trial.suggest_categorical('codebook_size', [16, 32, 48, 64, 128, 256, 512])
     config['model_params']['codebook_size'] = codebook_size
-    beta = trial.suggest_loguniform('beta', 0.1, 1.0)
+    beta = trial.suggest_float('beta', 0.1, 1.0,log=True)
     config['train_params']['commitment_loss_weight'] = beta
 
     # Load a subset of the data for faster tuning
