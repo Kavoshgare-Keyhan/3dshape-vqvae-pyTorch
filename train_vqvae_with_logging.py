@@ -65,8 +65,8 @@ def train_for_one_epoch(epoch_idx, model, data_loader, optimizer, criterion, con
         recon_loss = criterion(output, im)
 
         # Mixed precision training
-        with autocast():
-            loss = (config['train_params']['reconstruction_loss_weight']*recon_loss +
+        # with autocast():
+        loss = (config['train_params']['reconstruction_loss_weight']*recon_loss +
                     config['train_params']['codebook_loss_weight']*quantize_losses['codebook_loss'] +
                     config['train_params']['commitment_loss_weight']*quantize_losses['commitment_loss'])
         recon_losses.append(recon_loss.item())
@@ -74,15 +74,14 @@ def train_for_one_epoch(epoch_idx, model, data_loader, optimizer, criterion, con
         commitment_losses.append(quantize_losses['commitment_loss'].item())
         losses.append(loss.item())
         # Scales the loss, calls backward(), and then unscales gradients
-        scaler.scale(loss.item()).backward()
+        loss.backward()
         
         # Unscales gradients and calls the step function
-        scaler.step(optimizer)
-        scaler.update()
-
+        optimizer.step()
+        
+        
     avg_loss = np.mean(losses)
-    logging.info(f"Epoch {epoch_idx + 1} | Loss: {avg_loss:.4f} | Recon Loss : {np.mean(recon_losses):.4f} | Codebook Loss : {p.mean(codebook_losses):.4f} | Commitment Loss : {np.mean(commitment_losses):.4f}")
-
+    loggiing.info(f"Epoch {epoch_idx + 1} | Loss: {avg_loss:.4f} | Recon Loss : {np.mean(recon_losses):.4f} | Codebook Loss : {p.mean(codebook_losses):.4f} | Commitment Loss : {np.mean(commitment_losses):.4f}")
     return avg_loss
 
 def cross_validate(config, model, dataset, criterion, batch_size):
