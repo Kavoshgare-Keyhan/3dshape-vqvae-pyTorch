@@ -151,8 +151,8 @@ def validate(model, data_loader, criterion, config): #sample, batch_size
             commitment_loss = quantize_losses['commitment_loss'].mean()
 
             loss += (config['train_params']['reconstruction_loss_weight']*recon_loss.item() +
-                    config['train_params']['codebook_loss_weight']*quantize_losses['codebook_loss'].item() +
-                    config['train_params']['commitment_loss_weight']*quantize_losses['commitment_loss'].item())
+                    config['train_params']['codebook_loss_weight']*codebook_loss.item() +
+                    config['train_params']['commitment_loss_weight']*commitment_loss.item())
 
     avg_loss = np.mean(loss)
     return avg_loss
