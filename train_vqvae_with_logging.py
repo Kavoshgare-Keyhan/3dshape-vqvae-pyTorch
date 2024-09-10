@@ -66,16 +66,16 @@ def train_for_one_epoch(epoch_idx, model, data_loader, optimizer, criterion, con
 
         # Mixed precision training
         # with autocast():
-        codebook_loss = quantize_losses['codebook_loss'].mean().item()
-        comitment_loss = quantize_losses['commitment_loss'].mean().item()
-        recon_loss = recon_loss.item()
+        codebook_loss = quantize_losses['codebook_loss'].mean()
+        commitment_loss = quantize_losses['commitment_loss'].mean()
+        # recon_loss = recon_loss.item()
         loss = (config['train_params']['reconstruction_loss_weight']*recon_loss +
                     config['train_params']['codebook_loss_weight']*codebook_loss +
                     config['train_params']['commitment_loss_weight']*commitment_loss)
-        recon_losses.append(recon_loss)
-        codebook_losses.append(config['train_params']['codebook_loss_weight']*codebook_loss)
-        commitment_losses.append(commitment_loss)
-        losses.append(loss)
+        recon_losses.append(recon_loss.item())
+        codebook_losses.append(config['train_params']['codebook_loss_weight']*codebook_loss.item())
+        commitment_losses.append(commitment_loss.item())
+        losses.append(loss.item())
         # Scales the loss, calls backward(), and then unscales gradients
         loss.backward()
         
@@ -84,7 +84,7 @@ def train_for_one_epoch(epoch_idx, model, data_loader, optimizer, criterion, con
         
         
     avg_loss = np.mean(losses)
-    logging.info(f"Epoch {epoch_idx + 1} | Loss: {avg_loss:.4f} | Recon Loss : {np.mean(recon_losses):.4f} | Codebook Loss : {p.mean(codebook_losses):.4f} | Commitment Loss : {np.mean(commitment_losses):.4f}")
+    logging.info(f"Epoch {epoch_idx + 1} | Loss: {avg_loss:.4f} | Recon Loss : {np.mean(recon_losses):.4f} | Codebook Loss : {np.mean(codebook_losses):.4f} | Commitment Loss : {np.mean(commitment_losses):.4f}")
     return avg_loss
 
 def cross_validate(config, model, dataset, criterion, batch_size):
@@ -147,6 +147,9 @@ def validate(model, data_loader, criterion, config): #sample, batch_size
 
             recon_loss = criterion(output, im)
             quantize_losses = model_output['quantized_losses']
+            codebook_loss = quantize_losses['codebook_loss'].mean()
+            commitment_loss = quantize_losses['commitment_loss'].mean()
+
             loss += (config['train_params']['reconstruction_loss_weight']*recon_loss.item() +
                     config['train_params']['codebook_loss_weight']*quantize_losses['codebook_loss'].item() +
                     config['train_params']['commitment_loss_weight']*quantize_losses['commitment_loss'].item())
