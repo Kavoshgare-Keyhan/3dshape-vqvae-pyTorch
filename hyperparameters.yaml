@@ -21,8 +21,8 @@ train_params:
   reconstruction_loss_weight : 1
   codebook_loss_weight : 1
   commitment_loss_weight : 0.2
-  model_name: 'vqvae_nnL4_cdbk10_ld72.pth'
-  indices_tensor: 'vqvae_nnL4_cdbk10_ld72.pt'
+  model_name: 'vqvae_nnL4_cdbk144_ld243.pth'
+  indices_tensor: 'vqvae_nnL4_cdbk144_ld243.pt'
   seed: 42
   save_training_image: True
   path: /home/abghamtm/work/data/3dshapes.h5  #/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5  # '/content/drive/MyDrive/Data/3dshapes.h5' 
