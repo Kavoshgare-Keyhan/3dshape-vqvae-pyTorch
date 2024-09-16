@@ -83,11 +83,7 @@ def train_for_one_epoch(epoch_idx, model, data_loader, optimizer, criterion, con
         
         
     avg_loss = np.mean(losses)
-    logging.info(f'Finished epoch: {epoch_idx + 1} |
-                Total Loss: {avg_loss:.4f} |
-                Recon Loss : {np.mean(recon_losses):.4f} | 
-                Codebook Loss : {np.mean(codebook_losses):.4f} | 
-                Commitment Loss : {np.mean(commitment_losses):.4f}')
+    logging.info(f'Finished epoch: {epoch_idx + 1} | Total Loss: {avg_loss:.4f} | Recon Loss : {np.mean(recon_losses):.4f} | Codebook Loss : {np.mean(codebook_losses):.4f} | Commitment Loss : {np.mean(commitment_losses):.4f}')
     return avg_loss
 
 def train(config, model, dataset, criterion, batch_size=256, save_option=True):
@@ -198,14 +194,7 @@ def reconstruction_img(config, model, dataset, save_option=True):
     # plt.figure(figsize=(20, 10))
     # plt.imshow(img)
 
-def train_vqvae(config_path='hyperparameters.yaml'):
-    # Read the hyperparameters
-    with open(config_path, 'r') as file:
-        try:
-            config = yaml.safe_load(file)
-        except yaml.YAMLError as e:
-            logging.error(f"{e}", exc_info=True)
-    
+def train_vqvae(config):   
     # Load data as a dataset and split into training and test datasets
     dataset = Shapes3DDataset(path=config['train_params']['path'])
     train_dataset, test_dataset = split_dataset(dataset, config)
@@ -230,9 +219,15 @@ def train_vqvae(config_path='hyperparameters.yaml'):
 if __name__ == '__main__':
     # The niceness value is a number that affects the priority of a process. The lower the niceness value, the higher the priority of the process, meaning it will get more CPU time
     os.nice(10)
+    # Read the hyperparameters
+    with open('hyperparameters.yaml', 'r') as file:
+        try:
+            config = yaml.safe_load(file)
+        except yaml.YAMLError as e:
+            logging.error(f"{e}", exc_info=True)
     # Initialize processing hardware
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # Instanciate logging
-    setup_logger()
-    train_vqvae()
+    setup_logger(config)
+    train_vqvae(config)
 
