@@ -14,8 +14,8 @@ from sklearn.model_selection import train_test_split
 def setup_logger(config):
     # Create output directories
     if not os.path.exists(config['train_params']['output_dir']): os.mkdir(config['train_params']['output_dir'])
-    log_path = os.path.join(config['train_params']['output_dir'], config['train_params']['model_name'])
-    logging.basicConfig(filename='{log_path}.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
+    log_path = os.path.join(config['train_params']['output_dir'], 'log_',config['train_params']['model_name'])
+    logging.basicConfig(filename=f'{log_path}.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 # Method to load a pre-trained model (Warm Start / Transfer Learning)
 def load_pretrained_model_if_available(model, config):

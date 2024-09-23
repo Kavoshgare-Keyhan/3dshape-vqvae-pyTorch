@@ -3,26 +3,26 @@ model_params:
   convbn_blocks: 4 # suggestions: [2,3,4,5]
   conv_kernel_size: [3,3,3,2]
   conv_kernel_strides: [2, 2, 1, 1]
-  convbn_channels: [3, 9, 27, 81, 243] 
+  convbn_channels: [3, 6, 12, 36, 72] 
   conv_activation_fn: 'relu'
   transpose_bn_blocks: 4
-  transposebn_channels: [243, 81, 27, 9, 3]
+  transposebn_channels: [72, 36, 12, 6, 3]
   transpose_kernel_size: [3,3,3,2]
   transpose_kernel_strides: [2, 2, 1, 1]
   transpose_activation_fn: 'relu'
-  latent_dim: 243 # suggestions: [12,24,30,36,48,54,60,64,72]
-  codebook_size : 144 # suggestions: [10,20,30,40,50,60,70,80,90,100]
+  latent_dim: 72 # suggestions: [12,24,30,36,48,54,60,64,72]
+  codebook_size : 512 # suggestions: [10,20,30,40,50,60,70,80,90,100]
 
 train_params:
-  batch_size: 243
+  batch_size: 72
   epochs: 10
-  lr: 0.0003
+  lr: 0.0004
   crit: 'l2'
   reconstruction_loss_weight : 1
   codebook_loss_weight : 1
   commitment_loss_weight : 0.2
-  model_name: 'vqvae_nnL4_cdbk144_ld243.pth'
-  indices_tensor: 'vqvae_nnL4_cdbk144_ld243.pt'
+  model_name: 'vqvae_nnL4_cdbk512_ld72.pth'
+  indices_tensor: 'vqvae_nnL4_cdbk512_ld72.pt'
   seed: 42
   save_training_image: True
   path: /home/abghamtm/work/data/3dshapes.h5  #/home/mohsen/Desktop/Academia/RUB Research Projects/INI/data/3dshapes/3dshapes.h5  # '/content/drive/MyDrive/Data/3dshapes.h5' 
